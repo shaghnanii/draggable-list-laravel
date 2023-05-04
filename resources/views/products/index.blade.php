@@ -19,17 +19,38 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h4 class="alert alert-success pb-3 mt-4">Laravel Drag & Drop</h4>
+            <h4 class="alert alert-success pb-3 mt-4">Laravel Drag & Drop - using icon</h4>
 
             <div class="row">
                 @if(count($products) > 0)
                     <div class="col-12 p-3 shadow-lg">
-                        <ul class="list-group  sortable-data-list" id="products-drag-and-drop">
+                        <ul class="list-group  sortable-data-icon" id="products-drag-and-drop-icon">
                             @foreach($products as $key => $product)
                                 <li class="list-group-item ">
-                                    <div class="d-flex justify-content-between drag-me">
+                                    <div class="d-flex justify-content-between drag-me-icon">
                                         <span>{{ $product->title }}</span>
                                         <span class="fa fa-bars p-2 drag-icon" product-id="{{ $product->id }}"></span>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @else
+                    <div class="alert alert-danger">No products found in the server. Please add some products first.</div>
+                @endif
+            </div>
+
+            <hr>
+            <h4 class="alert alert-success pb-3 mt-4">Laravel Drag & Drop - on whole list</h4>
+            <div class="row mb-5">
+                @if(count($products) > 0)
+                    <div class="col-12 p-3 shadow-lg">
+                        <ul class="list-group  sortable-data-list" id="products-drag-and-drop-list">
+                            @foreach($products as $key => $product)
+                                <li class="list-group-item drag-list" product-id="{{ $product->id }}">
+                                    <div class="d-flex justify-content-between">
+                                        <span>{{ $product->title }}</span>
+                                        <span class="fa fa-bars p-2"></span>
                                     </div>
                                 </li>
                             @endforeach
@@ -51,17 +72,16 @@
 <script src="https://kit.fontawesome.com/dc8b83c874.js" crossorigin="anonymous"></script>
 <script>
     $(function () {
-        $("#products-drag-and-drop").sortable({
-            connectWith: ".sortable-data-list",
+        // logic for icon drag
+        $("#products-drag-and-drop-icon").sortable({
+            connectWith: ".sortable-data-icon",
             opacity: 0.5,
             handle: ".drag-icon"
         });
-        $(".sortable-data-list").on("sortupdate", function (event, ui) {
-            console.log("Drag update enable...")
+        $(".sortable-data-icon").on("sortupdate", function (event, ui) {
             let products = [];
             $(".drag-icon").each(function (index) {
                 products[index] = $(this).attr('product-id');
-                console.log('Dragging.... ID: ', products[index])
             });
             $.ajax({
                 method: 'PUT',
@@ -71,11 +91,36 @@
                 },
                 data: {products: products},
                 success: function (data) {
-                    console.log('success');
+                    console.log('Dragged and updated successfully.');
                 }
             });
-
         });
+
+
+        // whole list drag logic
+        $("#products-drag-and-drop-list").sortable({
+            connectWith: ".sortable-data-list",
+            opacity: 0.5,
+        });
+
+        $(".sortable-data-list").on("sortupdate", function (event, ui) {
+            let productLists = [];
+            $(".drag-list").each(function (index) {
+                productLists[index] = $(this).attr('product-id');
+            });
+            $.ajax({
+                method: 'PUT',
+                url: "{{ route('products.update', 1) }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {products: productLists},
+                success: function (data) {
+                    console.log('Dragged and updated successfully.');
+                }
+            });
+        });
+
     });
 </script>
 </body>
