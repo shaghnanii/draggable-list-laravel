@@ -26,7 +26,12 @@
                     <div class="col-12 p-3 shadow-lg">
                         <ul class="list-group  sortable-data-list" id="products-drag-and-drop">
                             @foreach($products as $key => $product)
-                                <li class="list-group-item " product-id="{{ $product->id }}">{{ $product->title }}</li>
+                                <li class="list-group-item ">
+                                    <div class="d-flex justify-content-between drag-me">
+                                        <span>{{ $product->title }}</span>
+                                        <span class="fa fa-bars p-2 drag-icon" product-id="{{ $product->id }}"></span>
+                                    </div>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
@@ -43,16 +48,20 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://kit.fontawesome.com/dc8b83c874.js" crossorigin="anonymous"></script>
 <script>
     $(function () {
         $("#products-drag-and-drop").sortable({
             connectWith: ".sortable-data-list",
             opacity: 0.5,
+            handle: ".drag-icon"
         });
         $(".sortable-data-list").on("sortupdate", function (event, ui) {
+            console.log("Drag update enable...")
             let products = [];
-            $("#products-drag-and-drop li").each(function (index) {
+            $(".drag-icon").each(function (index) {
                 products[index] = $(this).attr('product-id');
+                console.log('Dragging.... ID: ', products[index])
             });
             $.ajax({
                 method: 'PUT',
