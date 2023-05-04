@@ -7,17 +7,23 @@
     <title>Laravel - Draggable</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-sortable-helper {
+            background-color: gray !important;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h4 class="pb-2 pt-2">Laravel Drag & Drop</h4>
+        <div class="col-12">
+            <h4 class="alert alert-success pb-3 mt-4">Laravel Drag & Drop</h4>
 
             <div class="row">
                 @if(count($products) > 0)
-                    <div class="col-md-5 p-3 offset-md-1 shadow-lg">
+                    <div class="col-12 p-3 shadow-lg">
                         <ul class="list-group  sortable-data-list" id="products-drag-and-drop">
                             @foreach($products as $key => $product)
                                 <li class="list-group-item " product-id="{{ $product->id }}">{{ $product->title }}</li>
