@@ -12,7 +12,7 @@ Drag and drop implementation on laravel with jquery.
 
 <img src="./public/screenshot-one.png" alt="product-list">
 
-<img src="./public/screenshot-one.png" alt="drag-and-drop">
+<img src="./public/screenshot-two.png" alt="drag-and-drop">
 
 ## Steps
 
